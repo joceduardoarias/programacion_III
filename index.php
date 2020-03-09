@@ -7,13 +7,14 @@
 include ("./entidades/usuario.php");
 include ("./entidades/DAO.php");
 include ("./archivos/archivos.php");
-$path = 'C:\xampp\htdocs\backend\PP\usuarios.json';
-// $archivos = new archivos();
+$path = 'C:\xampp\htdocs\backend\proys\PHP\PP\usuarios.json';
 $DAO = new DAO();
+$imgName = $_FILES['img']['name'];
+echo $imgName;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST["tipo"]) {
         case 'alta':
-            $usuario = new usuario($_POST["legajo"],$_POST["email"],$_POST["nombre"],$_POST["clave"],$_POST["img"],$path);
+            $usuario = new usuario($_POST["legajo"],$_POST["email"],$_POST["nombre"],$_POST["clave"],$imgName,$path);
             if (!$DAO->Alta($usuario,$path)) {
                 echo "Ya esta registrado o el archivo no existe!!!";
                } else {
@@ -30,6 +31,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # code...
 }
 
-/**
- * El Alta funciona sin la carga de imagenes!!! 
- */

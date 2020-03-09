@@ -1,7 +1,9 @@
 <?php
 
 class archivos{
-
+/**
+ * Esta función genera el archivo JSON necesario para guardar los datos
+ */
     public function crearUsuariosJson($arr_clientes)
     {  
         try {
@@ -29,16 +31,26 @@ class archivos{
                 }
             }
             array_push($array,$obj);
-            //abro el archivo
+            
            if (!$this->validaArchivoExiste($obj->getPath())) {
                echo "El archivo no existe";
                return false;
-           } 
+           }
+           //abro el archivo 
             $file = fopen($obj->getPath(),"w");
             $json_string = json_encode($array);
            if (fwrite($file,$json_string)<=0) {
                return false;
-           } 
+           }
+           //Valido que haya una img cargada
+           if ($this->validarImgExiste($obj->getImg())) {
+               //cargar la img
+                if (!$this->cargarImg($obj->img)) {
+                    echo "Error cargando imagen";
+                    return false;
+                }
+           }
+           
            return true;
         } catch (Exception $e) {
             echo "Error en la craga de los datos", $e->getMessage(), "\n";
@@ -60,5 +72,35 @@ class archivos{
             echo "Error validando si  archivo existe", $e->getMessage(), "\n";
             return false;
         }
+    }
+/**
+ *Esta funcion valida que el $_FILES['imagen']['name'] este cargado.
+ */
+    public function validarImgExiste($imgName)
+    {
+        try {
+            if ($imgName == null) {
+                echo "no hay imagenes cargadas";
+                return false;
+            }
+            return true;
+        } catch (Exception $e) {
+            echo "Error validando si la imagen existe", $e->getMessage(), "\n";
+            return false;
+        }
+    }
+    /**
+     * Esta funcion se encarga de cargar la imagen
+     */
+    public function cargarImg($imgName)
+    {
+        $origen = $_FILES['img']['tmp_name'];
+        $destino = "img/" . $imgName;
+        
+        if (move_uploaded_file($origen,$destino)) {
+            echo "imagen cargada";
+            return true;
+        }
+        return false;
     }
 }
