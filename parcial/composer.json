@@ -1,0 +1,14 @@
+{
+    "name": "asus/slim_practica",
+    "authors": [
+        {
+            "name": "jose",
+            "email": "josee.ariasmelo@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.1",
+        "firebase/php-jwt": "^5.2"
+    }
+}
